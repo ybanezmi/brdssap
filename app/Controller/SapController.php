@@ -36,11 +36,15 @@ class SapController extends AppController {
 
     public function index() {
         phpinfo();
-        $this->render(Configure::read('SAP.VIEW.INDEX'));
     }
 
     public function import() {
-        $response = array();
+        $this->layout= 'ajax';
+        if ($this->request->is('get')) {
+            throw new MethodNotAllowedException();
+        }
+
+        $response = array('error' => 'tambok');
         if (!isset($this->request->data['RFC_FUNCTION'])) {
             $response['error'] = Configure::read('SAP.ERROR.200');
         } else if (!isset($this->request->data['PARAMS'])) {
@@ -49,6 +53,9 @@ class SapController extends AppController {
             $response = $this->SapRfc->import($this->request->data['RFC_FUNCTION'], $this->request->data['PARAMS']);
         }
 
-        echo json_encode($response);
+        $this->set(array(
+            'response' => $response,
+            '_serialize' => array('response')
+        ));
     }
 }

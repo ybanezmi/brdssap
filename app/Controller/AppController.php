@@ -31,4 +31,26 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
+
+    public $components = array(
+        'Session',
+        'Auth',
+        'Security'
+    );
+
+    public function beforeFilter() {
+
+        if(in_array($this->params['controller'],array('sap'))){
+            // For RESTful web service requests, we check the name of our contoller
+            $this->Auth->allow();
+            // this line should always be there to ensure that all rest calls are secure
+            /* $this->Security->requireSecure(); */
+            $this->Security->unlockedActions = array('import');
+
+        }else{
+            // setup out Auth
+            $this->Auth->allow();
+        }
+    }
+
 }

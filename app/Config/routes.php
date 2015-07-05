@@ -30,8 +30,8 @@
  */
 	//Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 
-    //Router::mapResources('sap');
-    //Router::parseExtensions();
+    Router::mapResources('sap');
+    Router::parseExtensions();
 
 /**
  * Load all plugin routes. See the CakePlugin documentation on

@@ -8,8 +8,7 @@ class SapRfcComponent extends Component {
 
         if (!function_exists(Configure::read('SAP.SAP_RFC_OPEN'))) {
             $response['error'] = Configure::read('SAP.ERROR.100');
-            echo json_encode($response);
-            exit(1);
+            return $response;
         }
 
         // Make a connection to the SAP server
@@ -17,8 +16,7 @@ class SapRfcComponent extends Component {
 
 		if (!$rfc) {
 		    $response['error'] = str_replace('{0}', saprfc_error(), Configure::read('SAP.ERROR.101'));
-		    echo json_encode($response);
-            exit(1);
+		    return $response;
 		}
 
         return $rfc;
@@ -27,13 +25,17 @@ class SapRfcComponent extends Component {
     public function import($rfcfunction, $params = null) {
         $rfc = $this->open();
 
+        if (isset($rfc['error'])) {
+            return $rfc;
+        }
+
         // Locate the function and discover the interface
 		$rfchandle = saprfc_function_discover($rfc, $rfcfunction);
 
 		if (!$rfchandle) {
 		    $rfcerror = str_replace('{0}', $rfcfunction, Configure::read('SAP.ERROR.102'));
             $response['error'] = str_replace('{1}', saprfc_error($rfc), $rfcerror);
-            echo json_encode($responses);
+            return $response;
 			exit(1);
 		}
 
