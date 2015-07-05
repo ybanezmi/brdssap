@@ -44,7 +44,6 @@ class SapController extends AppController {
             throw new MethodNotAllowedException();
         }
 
-        $response = array('error' => 'tambok');
         if (!isset($this->request->data['RFC_FUNCTION'])) {
             $response['error'] = Configure::read('SAP.ERROR.200');
         } else if (!isset($this->request->data['PARAMS'])) {

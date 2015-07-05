@@ -22,12 +22,12 @@
  */
 $config = array(
     'SapConfig' => array(
-        'ASHOST'    => '192.168.1.14', // application server host name
-        'SAPSYS'	=> 'QAS',
+        'ASHOST'    => '192.168.1.13', // application server host name
+        'SAPSYS'	=> 'DEV',
         'SYSNR'	    => '00',           // system number
-        'CLIENT'	=> '400',          // client
+        'CLIENT'	=> '110',          // client
         'USER'	    => 'dtcustodian',  // user
-        'PASSWD'    => 'bigblue',      // password
+        'PASSWD'    => 'bbl821',      // password
         'CODEPAGE'  => '1100',         // codepage
         'LANG'		=> 'EN',           // language
         'TRACE'     => 'X',

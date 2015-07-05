@@ -36,12 +36,11 @@ class SapRfcComponent extends Component {
 		    $rfcerror = str_replace('{0}', $rfcfunction, Configure::read('SAP.ERROR.102'));
             $response['error'] = str_replace('{1}', saprfc_error($rfc), $rfcerror);
             return $response;
-			exit(1);
 		}
 
         // Import by rfc function
         switch($rfcfunction) {
-            case Configure::read('SAP.ZBAPI_RECEIVING.FUNCTION_CODE'):
+            case Configure::read('SAP.ZBAPI_RECEIVING.FUNCTION_NAME'):
                 saprfc_import($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.RS_INPUT'), $params);
                 break;
             default:
@@ -61,8 +60,8 @@ class SapRfcComponent extends Component {
 		$vc = saprfc_export($rfchandle, Configure::read('VOLUME_CAP_ERROR'));
 		$oe = saprfc_export($rfchandle, Configure::read('OTHER_ERROR'));
 
-        $data_et_pallets = saprfc_table_rows ($rfchandle, 'ET_PALLETS');
-		$data_et_pallets_w_to = saprfc_table_rows ($rfchandle, 'ET_PALLETS_W_TO');
+        $data_et_pallets = saprfc_table_rows($rfchandle, 'ET_PALLETS');
+		$data_et_pallets_w_to = saprfc_table_rows($rfchandle, 'ET_PALLETS_W_TO');
 
         if ($rfc_rc != SAPRFC_OK) {
             if ($rfc_rc == SAPRFC_EXCEPTION) {
