@@ -53,15 +53,15 @@ class SapRfcComponent extends Component {
 		saprfc_table_init($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.ET_PALLETS_W_TO'));
 
         $rfc_rc = saprfc_call_and_receive($rfchandle);
-        $sn = saprfc_export($rfchandle, Configure::read('VBELN'));
-		$ol = saprfc_export($rfchandle, Configure::read('OBJECT_LOCKED'));
-		$nc = saprfc_export($rfchandle, Configure::read('NOT_COMPATIBLE'));
-        $wc = saprfc_export($rfchandle, Configure::read('WEIGHT_CAP_ERROR'));
-		$vc = saprfc_export($rfchandle, Configure::read('VOLUME_CAP_ERROR'));
-		$oe = saprfc_export($rfchandle, Configure::read('OTHER_ERROR'));
+        $sn = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.VBELN'));
+		$ol = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.OBJECT_LOCKED'));
+		$nc = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.NOT_COMPATIBLE'));
+        $wc = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.WEIGHT_CAP_ERROR'));
+		$vc = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.VOLUME_CAP_ERROR'));
+		$oe = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.OTHER_ERROR'));
 
-        $data_et_pallets = saprfc_table_rows($rfchandle, 'ET_PALLETS');
-		$data_et_pallets_w_to = saprfc_table_rows($rfchandle, 'ET_PALLETS_W_TO');
+        $data_et_pallets = saprfc_table_rows($rfchandle, 'SAP.ZBAPI_RECEIVING.ET_PALLETS');
+		$data_et_pallets_w_to = saprfc_table_rows($rfchandle, 'SAP.ZBAPI_RECEIVING.ET_PALLETS_W_TO');
 
         if ($rfc_rc != SAPRFC_OK) {
             if ($rfc_rc == SAPRFC_EXCEPTION) {
