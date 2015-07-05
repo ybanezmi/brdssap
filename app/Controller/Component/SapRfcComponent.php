@@ -90,8 +90,6 @@ class SapRfcComponent extends Component {
             }
          }
 
-        saprfc_exception($rfchandle);
-        saprfc_function_debug_info($rfchandle, false);
         $this->close($rfchandle, $rfc);
 
         return $response;
