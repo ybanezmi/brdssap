@@ -6,7 +6,7 @@ class SapRfcComponent extends Component {
         Configure::load('sap');
         $LOGIN = Configure::read('SapConfig');
 
-        if (!function_exists(Configure::read('SAP.SAP_RFC_OPEN'))) {
+        if (!function_exists(Configure::read('SAP.SAPRFC_OPEN'))) {
             $response['error'] = Configure::read('SAP.ERROR.100');
             return $response;
         }

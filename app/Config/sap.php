@@ -40,7 +40,7 @@ $config = array(
 // common
 Configure::write('SAP',
     array(
-        'SAP_RFC_OPEN'      => 'sap_rfc_open',
+        'SAPRFC_OPEN'      => 'saprfc_open',
     )
 );
 
