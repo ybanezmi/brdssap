@@ -102,7 +102,8 @@ Configure::write('Dispatcher.filters', array(
 Configure::write('CONST', array(
     'EMPTY_STRING'      => '',
     'HALF_WIDTH_SPACE'  => ' ',
-    'JSON'  => 'json',
+    'JSON'              => 'json',
+    'ZERO'              => '0',
 ));
 
 // Mappings
