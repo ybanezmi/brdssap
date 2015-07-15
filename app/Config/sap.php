@@ -46,7 +46,6 @@ Configure::write('SAP',
         'IMPORT'           => 'import',
         'EXPORT'           => 'export',
         'TABLE'            => 'table',
-        'ERROR'            => 'error',
     )
 );
 
