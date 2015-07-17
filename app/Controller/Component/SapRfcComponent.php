@@ -164,58 +164,5 @@ class SapRfcComponent extends Component {
 		saprfc_function_free($rfchandle);
 		saprfc_close($rfc);
 	}
-	
-	private function checkErrors($rfchandle, $rfc_rc, $response) {
-        if ($rfc_rc != SAPRFC_OK) {
-            if ($rfc_rc == SAPRFC_EXCEPTION) {
-                $response['error'] = str_replace('{0}', saprfc_exception($rfchandle), Configure::read('SAP.ERROR.103'));
-            } else {
-                $response['error'] = str_replace('{0}', saprfc_error(), Configure::read('SAP.ERROR.104'));
-            }
-        } else {
-            if (isset($response[Configure::read('SAP.EXPORT')]['TONumber']) && $response[Configure::read('SAP.EXPORT')]['TONumber'] === Configure::read('CONST.ZERO')) {
-                $response['error'] = str_replace('{0}', $response[Configure::read('SAP.EXPORT')]['TONumber'], Configure::read('SAP.ERROR.305'));
-            } else if (isset($response[Configure::read('SAP.EXPORT')][Configure::read('SAP.ZBAPI_POST_GR.POSTED_IND')]) && Configure::read('SAP.ZBAPI_POST_GR.POSTED_IND') === Configure::read('CONST.EMPTY_STRING')) {
-                $response['error'] = str_replace('{0}', $params[Configure::read('SAP.IMPORT')][Configure::read('SAP.ZBAPI_POST_GR.VBELN')], Configure::read('SAP.ERROR.305'));
-            } else if ($response[Configure::read('SAP.EXPORT')]['ol'] <> Configure::read('CONST.EMPTY_STRING')) {
-                $response['error'] = Configure::read('SAP.ERROR.300');
-            } else if ($response[Configure::read('SAP.EXPORT')]['nc'] <> Configure::read('CONST.EMPTY_STRING')) {
-                $response['error'] = Configure::read('SAP.ERROR.301');
-            } else if ($response[Configure::read('SAP.EXPORT')]['wc'] <> Configure::read('CONST.EMPTY_STRING')) {
-                $response['error'] = Configure::read('SAP.ERROR.302');
-            } else if ($response[Configure::read('SAP.EXPORT')]['vc'] <> Configure::read('CONST.EMPTY_STRING')) {
-                $response['error'] = Configure::read('SAP.ERROR.303');
-            } else if ($response[Configure::read('SAP.EXPORT')]['oe'] <> Configure::read('CONST.EMPTY_STRING')) {
-                $response['error'] = Configure::read('SAP.ERROR.304');
-            } else {
-                // Do nothing
-            }
-         }
-        return $response;
-    }
-
-    private function handleBAPIReceiving($rfchandle, $rfc_rc, $params, $response) {
-        saprfc_import($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.RS_INPUT'), $params);
-
-        saprfc_import($rfchandle, Configure::read('SAP.PRINTER'), Configure::read('SAP.PRINTER_VAL'));
-
-        saprfc_table_init($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.ET_PALLETS'));
-        saprfc_table_init($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.ET_PALLETS_W_TO'));
-
-        $rfc_rc = saprfc_call_and_receive($rfchandle);
-        $response[Configure::read('SAP.EXPORT')]['sn'] = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.VBELN'));
-        $response[Configure::read('SAP.EXPORT')]['ol'] = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.OBJECT_LOCKED'));
-        $response[Configure::read('SAP.EXPORT')]['nc'] = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.NOT_COMPATIBLE'));
-        $response[Configure::read('SAP.EXPORT')]['wc'] = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.WEIGHT_CAP_ERROR'));
-        $response[Configure::read('SAP.EXPORT')]['vc'] = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.VOLUME_CAP_ERROR'));
-        $response[Configure::read('SAP.EXPORT')]['oe'] = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.OTHER_ERROR'));
-
-        $response['table_rows']['data_et_pallets'] = saprfc_table_rows($rfchandle, 'SAP.ZBAPI_RECEIVING.ET_PALLETS');
-        $response['table_rows']['data_et_pallets_w_to'] = saprfc_table_rows($rfchandle, 'SAP.ZBAPI_RECEIVING.ET_PALLETS_W_TO');
-
-        $response = $this->checkErrors($rfchandle, $rfc_rc, $response);
-
-        return $response;
-    }
 
 }
