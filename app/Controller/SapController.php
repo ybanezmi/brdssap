@@ -49,7 +49,7 @@ class SapController extends AppController {
         } else if (!isset($this->request->data['PARAMS'])) {
             $response['error'] = Configure::read('SAP.ERROR.201');
         } else {
-            $response = $this->SapRfc->callBAPIReceiving($this->request->data['PARAMS']);
+            $response = $this->SapRfc->import($this->request->data['RFC_FUNCTION']), $this->request->data['PARAMS']);
         }
 
         $this->set(array(
