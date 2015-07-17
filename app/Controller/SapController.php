@@ -40,17 +40,17 @@ class SapController extends AppController {
 
     public function import() {
         $this->layout= 'ajax';
-        if ($this->request->is('get')) {
-            throw new MethodNotAllowedException();
-        }
+        // if ($this->request->is('get')) {
+            // throw new MethodNotAllowedException();
+        // }
 
-        if (!isset($this->request->data['RFC_FUNCTION'])) {
-            $response['error'] = Configure::read('SAP.ERROR.200');
-        } else if (!isset($this->request->data['PARAMS'])) {
-            $response['error'] = Configure::read('SAP.ERROR.201');
-        } else {
-            $response = $this->SapRfc->import($this->request->data['RFC_FUNCTION'], $this->request->data['PARAMS']);
-        }
+        // if (!isset($this->request->data['RFC_FUNCTION'])) {
+            // $response['error'] = Configure::read('SAP.ERROR.200');
+        // } else if (!isset($this->request->data['PARAMS'])) {
+            // $response['error'] = Configure::read('SAP.ERROR.201');
+        // } else {
+            $response = $this->SapRfc->callBAPIFunction($this->request->data['RFC_FUNCTION'], $this->request->data['PARAMS']);
+        // }
 
         $this->set(array(
             'response' => $response,
