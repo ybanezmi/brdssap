@@ -63,7 +63,44 @@ Configure::write('SAP.ZBAPI_RECEIVING',
     )
 );
 
-// SAP ZBAPI_RECEIVING error messages
+// SAP L_TO_CREATE_MOVE_SU constants
+Configure::write('SAP.L_TO_CREATE_MOVE_SU',
+    array(
+        'FUNCTION_CODE'     => 'Z002',
+        'FUNCTION_NAME'     => 'L_TO_CREATE_MOVE_SU',
+        'I_LENUM'           => 'I_LENUM',               // Pallet Number
+        'I_BWLVS'           => 'I_BWLVS',               // Movement Type 501 for Putaway
+        'I_BWLVS_VAL'       => '501',                   // Movement Type 501 for Putaway (value)
+        'I_COMMIT_WORK'     => 'I_COMMIT_WORK',         // Commit to Work X - optional
+        'I_BNAME'           => 'I_BNAME',               // Creator name - optional
+        'I_BNAME_VAL'       => 'DTCUSTODIAN',           // Creator name - optional (value)
+        'E_TANUM'           => 'E_TANUM',               // Transfer Order
+        'E_NLTYP'           => 'E_NLTYP',               // Destination Storage Type
+        'E_NLBER'           => 'E_NLBER',               // Destination Storage Section
+        'E_NLPLA'           => 'E_NLPLA',               // Destination Storage Bin
+        'E_NPPOS'           => 'E_NPPOS',               // Destination Storage Position
+        'TRANSFER_ORDER'    => 'transfer_order',        // Transfer Order
+        'STORAGE_TYPE'      => 'storage_type',          // Destination Storage Type
+        'STORAGE_SECTION'   => 'storage_section',       // Destination Storage Section
+        'STORAGE_BIN'       => 'storage_bin',           // Destination Storage Bin
+        'STORAGE_POSITION'  => 'storage_position',      // Destination Storage Position
+    )
+);
+
+// SAP ZBAPI_RECEIVING constants
+Configure::write('SAP.ZBAPI_POST_GR',
+    array(
+        'FUNCTION_CODE'     => 'Z003',
+        'FUNCTION_NAME'     => 'ZBAPI_POST_GR',
+        'VBELN'             => 'VBELN',                 // Inbound Number
+        'WDATU'             => 'WDATU',                 // Date
+        'PRINTER'           => 'PRINTER',
+        'PRINTER_VAL'       => 'PRINTER_VAL',
+        'POSTED_IND'        => 'POSTED_IND',
+    )
+);
+
+// SAP error messages
 Configure::write('SAP.ERROR',
     array(
         '100' => 'SAPRFC PHP extension not installed in the server.',
@@ -78,5 +115,7 @@ Configure::write('SAP.ERROR',
         '302' => '[SAP] Weight over-capacity error. Please check material configuration.',
         '303' => '[SAP] Volume over-capacity error. Please check material configuration.',
         '304' => '[SAP] Inbound number is currently being processed by another user.',
+        '305' => '[SAP] Error in putaway configuration, please check material(s).',
+        '306' => '[SAP] Inbound No. {0} not successfully closed. Please check for errors.',
     )
 );

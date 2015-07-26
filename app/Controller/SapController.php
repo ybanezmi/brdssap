@@ -53,6 +53,12 @@ class SapController extends AppController {
 				case Configure::read('SAP.ZBAPI_RECEIVING.FUNCTION_NAME'):
 		            $response = $this->SapRfc->callBAPIReceiving($this->request->data['PARAMS']);
 					break;
+                case Configure::read('SAP.L_TO_CREATE_MOVE_SU.FUNCTION_NAME'):
+                    $response = $this->SapRfc->callBAPICreateTO($this->request->data['PARAMS']);
+                    break;
+                case Configure::read('SAP.ZBAPI_POST_GR.FUNCTION_NAME'):
+                    $response = $this->SapRfc->callBAPICloseReceiving($this->request->data['PARAMS']);
+                    break;
 				default:
 					// Do nothing
 					break;
