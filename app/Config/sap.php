@@ -95,7 +95,7 @@ Configure::write('SAP.ZBAPI_POST_GR',
         'VBELN'             => 'VBELN',                 // Inbound Number
         'WDATU'             => 'WDATU',                 // Date
         'PRINTER'           => 'PRINTER',
-        'PRINTER_VAL'       => 'PRINTER_VAL',
+        'PRINTER_VAL'       => 'ZWI1',
         'POSTED_IND'        => 'POSTED_IND',
     )
 );
