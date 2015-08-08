@@ -61,6 +61,7 @@ class SapController extends AppController {
                     break;
 				default:
 					// Do nothing
+                    $response['error'] = "BAPI Function not found.";
 					break;
         	}
         }

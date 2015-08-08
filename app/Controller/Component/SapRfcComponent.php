@@ -180,8 +180,10 @@ class SapRfcComponent extends Component {
         saprfc_import($rfchandle, Configure::read('SAP.L_TO_CREATE_MOVE_SU.I_BWLVS'), Configure::read('SAP.L_TO_CREATE_MOVE_SU.I_BWLVS_VAL'));
         //saprfc_import($rfchandle, Configure::read('SAP.L_TO_CREATE_MOVE_SU.I_COMMIT_WORK'), Configure::read('CONST.X'));
         //saprfc_import($rfchandle, Configure::read('SAP.L_TO_CREATE_MOVE_SU.I_BNAME'), Configure::read('SAP.L_TO_CREATE_MOVE_SU.I_BNAME_VAL'));
-
+        $response['error'] = saprfc_error();
+        return $response;
         $rfc_rc = saprfc_call_and_receive($rfchandle);
+        
         $toNumber = saprfc_export($rfchandle, Configure::read('SAP.L_TO_CREATE_MOVE_SU.E_TANUM'));
         $destinationStorageType = saprfc_export($rfchandle, Configure::read('SAP.L_TO_CREATE_MOVE_SU.E_NLTYP'));
         $destinationStorageSection = saprfc_export($rfchandle, Configure::read('SAP.L_TO_CREATE_MOVE_SU.E_NLBER'));
@@ -211,7 +213,7 @@ class SapRfcComponent extends Component {
          }
 
         $this->close($rfchandle, $rfc);
-
+        $response['error'] = "tambok";
         return $response;
     }
 
