@@ -178,6 +178,7 @@ class SapRfcComponent extends Component {
 
         saprfc_import($rfchandle, Configure::read('SAP.L_TO_CREATE_MOVE_SU.I_LENUM'), $params['I_LENUM']);
         saprfc_import($rfchandle, Configure::read('SAP.L_TO_CREATE_MOVE_SU.I_BWLVS'), Configure::read('SAP.L_TO_CREATE_MOVE_SU.I_BWLVS_VAL'));
+		saprfc_import($rfchandle, "I_SQUIT", "X");
         //saprfc_import($rfchandle, Configure::read('SAP.L_TO_CREATE_MOVE_SU.I_COMMIT_WORK'), Configure::read('CONST.X'));
         //saprfc_import($rfchandle, Configure::read('SAP.L_TO_CREATE_MOVE_SU.I_BNAME'), Configure::read('SAP.L_TO_CREATE_MOVE_SU.I_BNAME_VAL'));
         $response['error'] = saprfc_error();
