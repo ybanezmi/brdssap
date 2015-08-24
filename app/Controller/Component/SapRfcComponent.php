@@ -181,15 +181,20 @@ class SapRfcComponent extends Component {
 		saprfc_import($rfchandle, "I_SQUIT", "X");
         //saprfc_import($rfchandle, Configure::read('SAP.L_TO_CREATE_MOVE_SU.I_COMMIT_WORK'), Configure::read('CONST.X'));
         //saprfc_import($rfchandle, Configure::read('SAP.L_TO_CREATE_MOVE_SU.I_BNAME'), Configure::read('SAP.L_TO_CREATE_MOVE_SU.I_BNAME_VAL'));
-        $response['error'] = saprfc_error();
-        return $response;
+        //$response['error'] = saprfc_error();
+        //return $response;
+        $response['befo call'] = Configure::read('SAP.L_TO_CREATE_MOVE_SU.FUNCTION_NAME');
+        //return $response;
         $rfc_rc = saprfc_call_and_receive($rfchandle);
-        
+        $response['after call'] = 'yes';
+        //return $response;
         $toNumber = saprfc_export($rfchandle, Configure::read('SAP.L_TO_CREATE_MOVE_SU.E_TANUM'));
-        $destinationStorageType = saprfc_export($rfchandle, Configure::read('SAP.L_TO_CREATE_MOVE_SU.E_NLTYP'));
-        $destinationStorageSection = saprfc_export($rfchandle, Configure::read('SAP.L_TO_CREATE_MOVE_SU.E_NLBER'));
-        $destinationStorageBin = saprfc_export($rfchandle, Configure::read('SAP.L_TO_CREATE_MOVE_SU.E_NLPLA'));
-        $destinationStoragePosition = saprfc_export($rfchandle, Configure::read('SAP.L_TO_CREATE_MOVE_SU.E_NPPOS'));
+        $response['to'] = $toNumber;
+        //return $response;
+        //$destinationStorageType = saprfc_export($rfchandle, Configure::read('SAP.L_TO_CREATE_MOVE_SU.E_NLTYP'));
+        //$destinationStorageSection = saprfc_export($rfchandle, Configure::read('SAP.L_TO_CREATE_MOVE_SU.E_NLBER'));
+        //$destinationStorageBin = saprfc_export($rfchandle, Configure::read('SAP.L_TO_CREATE_MOVE_SU.E_NLPLA'));
+        //$destinationStoragePosition = saprfc_export($rfchandle, Configure::read('SAP.L_TO_CREATE_MOVE_SU.E_NPPOS'));
 
         if ($rfc_rc != SAPRFC_OK) {
             if ($rfc_rc == SAPRFC_EXCEPTION) {
@@ -202,10 +207,10 @@ class SapRfcComponent extends Component {
             if ($toNumber <> Configure::read('CONST.EMPTY_STRING') && $toNumber <> Configure::read('CONST.ZERO_STRING')) {
                 $response['export'] = array(
                     Configure::read('SAP.L_TO_CREATE_MOVE_SU.TRANSFER_ORDER') => $toNumber,
-                    Configure::read('SAP.L_TO_CREATE_MOVE_SU.STORAGE_TYPE') => $destinationStorageType,
-                    Configure::read('SAP.L_TO_CREATE_MOVE_SU.STORAGE_SECTION') => $destinationStorageSection,
-                    Configure::read('SAP.L_TO_CREATE_MOVE_SU.STORAGE_BIN') => $destinationStorageBin,
-                    Configure::read('SAP.L_TO_CREATE_MOVE_SU.STORAGE_POSITION') => $destinationStoragePosition,
+                    //Configure::read('SAP.L_TO_CREATE_MOVE_SU.STORAGE_TYPE') => $destinationStorageType,
+                    //Configure::read('SAP.L_TO_CREATE_MOVE_SU.STORAGE_SECTION') => $destinationStorageSection,
+                    //Configure::read('SAP.L_TO_CREATE_MOVE_SU.STORAGE_BIN') => $destinationStorageBin,
+                    //Configure::read('SAP.L_TO_CREATE_MOVE_SU.STORAGE_POSITION') => $destinationStoragePosition,
                 );
             // SAP bapi function error occurred
             } else {
@@ -214,7 +219,6 @@ class SapRfcComponent extends Component {
          }
 
         $this->close($rfchandle, $rfc);
-        $response['error'] = "tambok";
         return $response;
     }
 
@@ -240,7 +244,8 @@ class SapRfcComponent extends Component {
 
         $rfc_rc = saprfc_call_and_receive($rfchandle);
         $postIndicator = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_POST_GR.POSTED_IND'));
-
+        //$response['success'] = true;
+        //return $response;
         if ($rfc_rc != SAPRFC_OK) {
             if ($rfc_rc == SAPRFC_EXCEPTION) {
                 $response['error'] = str_replace('{0}', saprfc_exception($rfchandle), Configure::read('SAP.ERROR.103'));
@@ -254,6 +259,55 @@ class SapRfcComponent extends Component {
             // SAP bapi function error occurred
             } else {
                 $response['error'] = str_replace('{0}', $params['VBELN'], Configure::read('SAP.ERROR.306'));
+            }
+         }
+
+        $this->close($rfchandle, $rfc);
+
+        return $response;
+    }
+
+    public function callBAPIDispatch($params = null) {
+        $rfc = $this->open();
+
+        if (isset($rfc['error'])) {
+            return $rfc;
+        }
+
+        // Locate the function and discover the interface
+        $rfchandle = saprfc_function_discover($rfc, Configure::read('SAP.ZRFC_READTEXT.FUNCTION_NAME'));
+
+        if (!$rfchandle) {
+            $rfcerror = str_replace('{0}', Configure::read('SAP.ZRFC_READTEXT.FUNCTION_NAME'), Configure::read('SAP.ERROR.102'));
+            $response['error'] = str_replace('{1}', saprfc_error($rfc), $rfcerror);
+            return $response;
+        }
+
+        $data = array();
+        //CPU - $params['VBELN']
+        saprfc_import($rfchandle, Configure::read('SAP.ZRFC_READTEXT.VBELN'), $params['VBELN']);
+        saprfc_table_init($rfchandle, Configure::read('SAP.ZRFC_READTEXT.LINES'));
+
+        $rfc_rc = saprfc_call_and_receive($rfchandle);
+
+        $header = saprfc_export($rfchandle, Configure::read('SAP.ZRFC_READTEXT.HEADER'));
+        $data_lines = saprfc_table_rows($rfchandle, Configure::read('SAP.ZRFC_READTEXT.LINES'));
+        for($i=1;$i<=$data_lines;$i++){
+            $data_row = saprfc_table_read($rfchandle, Configure::read('SAP.ZRFC_READTEXT.LINES'),$i);
+            $data[$i] = $data_row;
+        }
+         if ($rfc_rc != SAPRFC_OK) {
+            if ($rfc_rc == SAPRFC_EXCEPTION) {
+                $response['error'] = str_replace('{0}', saprfc_exception($rfchandle), Configure::read('SAP.ERROR.103'));
+            } else {
+                $response['error'] = str_replace('{0}', saprfc_error(), Configure::read('SAP.ERROR.104'));
+            }
+        } else {
+            if ($header <> Configure::read('CONST.EMPTY_STRING')) {
+                $response['header'] = $header;
+                $response['data_lines'] = $data;
+            } else {
+                // Do nothing
             }
          }
 

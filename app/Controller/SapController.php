@@ -59,6 +59,9 @@ class SapController extends AppController {
                 case Configure::read('SAP.ZBAPI_POST_GR.FUNCTION_NAME'):
                     $response = $this->SapRfc->callBAPICloseReceiving($this->request->data['PARAMS']);
                     break;
+                case Configure::read('SAP.ZRFC_READTEXT.FUNCTION_NAME'):
+                    $response = $this->SapRfc->callBAPIDispatch($this->request->data['PARAMS']);
+                    break;  
 				default:
 					// Do nothing
                     $response['error'] = "BAPI Function not found.";

@@ -100,6 +100,17 @@ Configure::write('SAP.ZBAPI_POST_GR',
     )
 );
 
+// SAP READ_TEXT constants
+Configure::write('SAP.ZRFC_READTEXT',
+    array(
+        'FUNCTION_CODE'    => 'Z004',
+        'FUNCTION_NAME'    => 'ZRFC_READTEXT',
+        'VBELN'            => 'VBELN',           
+        'HEADER'           => 'HEADER',             
+        'LINES'            => 'LINES'             
+    )
+);
+
 // SAP error messages
 Configure::write('SAP.ERROR',
     array(
