@@ -124,11 +124,11 @@ class SapRfcComponent extends Component {
 
         $rfc_rc = saprfc_call_and_receive($rfchandle);
         $sn = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.VBELN'));
-		$ol = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.OBJECT_LOCKED'));
-		$nc = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.NOT_COMPATIBLE'));
-        $wc = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.WEIGHT_CAP_ERROR'));
-		$vc = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.VOLUME_CAP_ERROR'));
-		$oe = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.OTHER_ERROR'));
+		// $ol = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.OBJECT_LOCKED'));
+		// $nc = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.NOT_COMPATIBLE'));
+        // $wc = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.WEIGHT_CAP_ERROR'));
+		// $vc = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.VOLUME_CAP_ERROR'));
+		// $oe = saprfc_export($rfchandle, Configure::read('SAP.ZBAPI_RECEIVING.OTHER_ERROR'));
 
         $data_et_pallets = saprfc_table_rows($rfchandle, 'SAP.ZBAPI_RECEIVING.ET_PALLETS');
 		$data_et_pallets_w_to = saprfc_table_rows($rfchandle, 'SAP.ZBAPI_RECEIVING.ET_PALLETS_W_TO');
@@ -145,7 +145,11 @@ class SapRfcComponent extends Component {
                 $response['sap_inbound_no'] = $sn;
                 $response['pallet_no'] = $data_et_pallets;
             // SAP bapi function error occurred
-            } else if ($ol <> Configure::read('CONST.EMPTY_STRING')) {
+            } else {
+            	$response['error'] = Configure::read('SAP.ERROR.307');
+            }
+            /*
+            else if ($ol <> Configure::read('CONST.EMPTY_STRING')) {
                 $response['error'] = Configure::read('SAP.ERROR.300');
             } else if ($nc <> Configure::read('CONST.EMPTY_STRING')) {
                 $response['error'] = Configure::read('SAP.ERROR.301');
@@ -158,6 +162,7 @@ class SapRfcComponent extends Component {
             } else {
                 // Do nothing
             }
+			 */
          }
 
         $this->close($rfchandle, $rfc);
