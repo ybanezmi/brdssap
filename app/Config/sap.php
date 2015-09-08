@@ -128,5 +128,6 @@ Configure::write('SAP.ERROR',
         '304' => '[SAP] Inbound number is currently being processed by another user.',
         '305' => '[SAP] Error in putaway configuration, please check material(s).',
         '306' => '[SAP] Inbound No. {0} not successfully closed. Please check for errors.',
+        '307' => '[SAP] Error retrieving inbound number.',
     )
 );
