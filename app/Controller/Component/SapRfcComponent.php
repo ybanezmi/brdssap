@@ -101,6 +101,7 @@ class SapRfcComponent extends Component {
 	}
 
 	public function callBAPIReceiving($params = null) {
+
         $rfc = $this->open();
 
         if (isset($rfc['error'])) {
@@ -147,6 +148,7 @@ class SapRfcComponent extends Component {
             // SAP bapi function error occurred
             } else {
             	$response['error'] = Configure::read('SAP.ERROR.307');
+                $response['error'] = saprfc_error();
             }
             /*
             else if ($ol <> Configure::read('CONST.EMPTY_STRING')) {
@@ -224,7 +226,7 @@ class SapRfcComponent extends Component {
                 );
             // SAP bapi function error occurred
             } else {
-                $response['error'] = Configure::read('SAP.ERROR.305');
+                $response['error'] = Configure::read('SAP.ERROR.305') . ' ' . saprfc_error();
             }
          }
 
